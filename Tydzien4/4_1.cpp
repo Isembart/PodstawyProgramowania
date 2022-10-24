@@ -14,6 +14,7 @@ int newt(int,int);
 void trojkat(int);
 void printSpaces(int);
 
+
 using namespace std;
 
 int main() {
