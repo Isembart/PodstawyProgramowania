@@ -19,7 +19,10 @@ using namespace std;
 
 int main() {
 
-    trojkat(12);
+    cout << "Podaj ilosc wierszy trojkata pascala: " ;
+    int w;
+    cin >> w;
+    trojkat(w);
     return 0;
 }
 
