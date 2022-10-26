@@ -75,7 +75,7 @@ int main()
 void rzut(int& k1, int& k2, bool isSimulation) {
     //Genertuje liczby losowe od 1 do 6
     if(!isSimulation) {
-        cout << "Nacisnij dowolny klawisz aby rzucic koscmi" << endl;
+        cout << "Nacisnij ENTER klawisz aby rzucic koscmi" << endl;
         getchar();
     }
     k1 = rand() % 6+1;
