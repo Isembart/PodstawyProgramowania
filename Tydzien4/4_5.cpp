@@ -7,10 +7,13 @@ int main() {
 
     //n max = 100000
     // n max w siodemkowym = 564355 wiec najwieksza mozliwa liczba bedzie miala tylko 6 cyfr
-    cout << "Podaj liczbe ktora chcesz przedstawic w systemie siodemkowym: ";
     //liczba do przekonwertowania
-    int n;
-    cin >> n;
+    int n=-4;
+    while(0>n || n> 100000)
+    {
+        cout << "Podaj liczbe od 0 do 100000 ktora chcesz przedstawic w systemie siodemkowym: ";
+        cin >> n;
+    }
 
     //Jezeli uzytkownik wpisal liczbę mniejszą od 7, nie ma sensu konwertować liczby, wystarczy zwrócić n i zakończyć program
     if(n<7) {
