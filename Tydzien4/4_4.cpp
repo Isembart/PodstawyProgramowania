@@ -37,7 +37,7 @@ int main() {
 }
 
 
-void przelicz(int* wskG, int* wskM, bool MtoG) {
+void przelicz(int *wskG, int *wskM, bool MtoG) {
 
     if(MtoG) {
         *wskG = *wskM - *wskM/33+621;
