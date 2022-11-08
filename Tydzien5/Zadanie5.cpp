@@ -148,6 +148,7 @@ int main() {
     //Wypisz ilosc najczęstszych ocen
     cout << "w ilosci: " << iloscNajOcen << endl;
 
+    //Histogram
     cout << endl << "HISTOGRAM" << endl;
     for(int i=0;i < 11;i++)
     {
