@@ -1,9 +1,7 @@
 //Maurycy Farski  
 #include <iostream>
-#include <time.h>
+#include <time.h> //srand(time())
 #include <iomanip> //w celu wyrównania "10" w histogramie
-
-
 
 using namespace std;
 
@@ -25,10 +23,8 @@ int wylosujOceny(int tab[], int rozmiarTablicy) {
     return suma;
 }
 
-
 void PosortujTablice(int tab[], int rozmiarTablicy) {
     bool Sorted;
-
     do
     {
         Sorted = false;
@@ -62,9 +58,8 @@ float Mediana(int tab[], int rozmiarTablicy) {
     }
 }
 
-//rozmiarOut - Ilosc możliwych wartosci - w tym przypadku 11
-//out[] - tablica do ustawinia możliwych ilosci
 //Funckja ustawia wartosci tablicy out[] na podstawie ilosci wystapien tych wartosci w tablicy tab[]
+//out[] - tablica do ustawinia możliwych ilosci
 void getValues(int tab[], int rozmiarTablicy, int out[]) {
     for(int i=0; i < 11; i++) {
         //Ustawia wszystkie wartosci na 0
@@ -72,6 +67,19 @@ void getValues(int tab[], int rozmiarTablicy, int out[]) {
     }
     for(int i=0; i<rozmiarTablicy; i++){
         out[tab[i]]++;
+    }
+}
+
+void histogram(int tab[],int rozmiarTablicy) {
+    //Histogram
+    cout << endl << "HISTOGRAM" << endl;
+    for(int i=0;i < rozmiarTablicy;i++)
+    {
+        cout << setw(2) <<i<<"-";
+        for(int j=0; j <tab[i];j++) {
+            cout<<"*";
+        }
+        cout<<endl;
     }
 }
 
@@ -96,17 +104,24 @@ int main() {
     //4 
     PosortujTablice(studenci,100);
 
+    //Wypisanie Posortowanej tablicy 
+    /*
     cout <<endl<< "POSORTOWANA TABLICA: " << endl;
     for(int i=0; i < 100; i++) {
 
         cout <<"Student "<< i+1 << ": "<< studenci[i] << endl;
     }
+    */
 
     cout << endl<<"Mediana: " << Mediana(studenci,100) << endl;
 
+
+    //Tablica trzymjąca ilości ocen uzyskanych przez studentów
     int oceny[11];
+    //pobierz ilosc ocen z tablicy
     getValues(studenci,100,oceny);
-    
+
+    //Wypisz ilosc ocen 
     cout<<endl<<"ILOSC OCEN: " << endl;
     for(int i=0; i < 11; i++) {
         cout <<i << ": " << oceny[i] << endl;
@@ -148,16 +163,9 @@ int main() {
     //Wypisz ilosc najczęstszych ocen
     cout << "w ilosci: " << iloscNajOcen << endl;
 
-    //Histogram
-    cout << endl << "HISTOGRAM" << endl;
-    for(int i=0;i < 11;i++)
-    {
-        cout << setw(2) <<i<<"-";
-        for(int j=0; j <oceny[i];j++) {
-            cout<<"*";
-        }
-        cout<<endl;
-    }
+    histogram(oceny,11);
+
+    
     return 0;
 }
 
