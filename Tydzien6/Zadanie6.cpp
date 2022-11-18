@@ -8,15 +8,18 @@ void wypiszTablice(int*, int);
 int sumaKwadratowNP(int*, int);
 int maxElement(int*,int,int* = nullptr);
 int srednia(int*, int);
-double odchylenieStd(int*,int rozmiar);
+double odchylenieStd(int*,int);
+int iloczynSkalarny(int*,int*,int);
 
 using namespace std;
 
 int main() {
     srand(time(NULL));
     int X[N],Y[N]; 
+
     wypelnijTablice(X,N,3,8);
     wypelnijTablice(Y,N,3,8); 
+
     wypiszTablice(X,N);
     wypiszTablice(Y,N);
 
@@ -24,7 +27,11 @@ int main() {
 
     int index;
     cout << endl << maxElement(Y,N,&index);
-    cout<< endl << index;
+    cout<< endl << index << endl;
+
+    cout << "Odchylenie standardowe tablicy X: " << odchylenieStd(X,N) << endl;
+
+    cout << "Iloczyn skalarny tych tablic to: " << iloczynSkalarny(X,Y,N);
 }
 
 //Funckja wypisuje zawartość tablicy
@@ -85,4 +92,12 @@ double odchylenieStd(int Tab[], int rozmiar) {
     }
 
     return sqrt(odchylenie_mn/rozmiar);
+}
+
+int iloczynSkalarny(int Tab1[], int Tab2[], int rozmiar) {
+    int iloczyn=0;
+    for(int i = 0; i < rozmiar ; i++) {
+        iloczyn+=Tab1[i] * Tab2[i];
+    }
+    return iloczyn;
 }
