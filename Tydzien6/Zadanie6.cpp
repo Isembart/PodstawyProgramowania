@@ -1,11 +1,14 @@
 #include <iostream>
 #include <time.h>
+#include <cmath>
 #define N 10
 
 void wypelnijTablice(int*, int, int,int);
 void wypiszTablice(int*, int);
 int sumaKwadratowNP(int*, int);
 int maxElement(int*,int,int* = nullptr);
+int srednia(int*, int);
+double odchylenieStd(int*,int rozmiar);
 
 using namespace std;
 
@@ -17,13 +20,12 @@ int main() {
     wypiszTablice(X,N);
     wypiszTablice(Y,N);
 
-    cout << sumaKwadratowNP(X,N);
+    cout << "Suma kwadratw liczb nieparzystych z tablicy Y: " <<sumaKwadratowNP(X,N);
 
     int index;
     cout << endl << maxElement(Y,N,&index);
     cout<< endl << index;
 }
-
 
 //Funckja wypisuje zawartość tablicy
 void wypiszTablice(int Tab[], int rozmiar) {
@@ -58,10 +60,29 @@ int sumaKwadratowNP(int Tab[], int rozmiar) {
 int maxElement(int Tab[],int rozmiar, int* indx) {
     int maxElement;
     for(int i=0; i< rozmiar;i++) {
-        if(Tab[i]>maxElement) {
+        if(Tab[i]>=maxElement) {
             maxElement = Tab[i];
             if(indx!=nullptr) *indx = i;
         }
     }
     return maxElement;
+}
+
+int srednia(int Tab[], int rozmiar) {
+    int suma=0;
+    for(int i=0;i<rozmiar;i++) {
+        suma+=Tab[i];
+    }
+    return suma/rozmiar;
+}
+
+double odchylenieStd(int Tab[], int rozmiar) {
+    int _srednia = srednia(Tab,rozmiar);
+    //mianownik z równania na odchylenie standardowe
+    int odchylenie_mn=0;
+    for(int i = 0; i < rozmiar; i++) {
+        odchylenie_mn += (Tab[i]-_srednia)*(Tab[i]-_srednia);
+    }
+
+    return sqrt(odchylenie_mn/rozmiar);
 }
