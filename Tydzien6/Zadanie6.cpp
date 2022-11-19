@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <cmath>
-#define N 10
+#define N 100
 
 void wypelnijTablice(int*, int, int,int);
 void wypiszTablice(int*, int);
