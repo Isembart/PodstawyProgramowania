@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <cmath>
-#define N 100
+#define N 25
 
 void wypelnijTablice(int*, int, int,int);
 void wypiszTablice(int*, int);
@@ -17,8 +17,8 @@ int main() {
     srand(time(NULL));
     int X[N],Y[N]; 
 
-    wypelnijTablice(X,N,3,8);
-    wypelnijTablice(Y,N,3,8); 
+    wypelnijTablice(X,N,3,10);
+    wypelnijTablice(Y,N,3,10); 
 
     wypiszTablice(X,N);
     wypiszTablice(Y,N);
@@ -26,8 +26,8 @@ int main() {
     cout << "Suma kwadratw liczb nieparzystych z tablicy Y: " <<sumaKwadratowNP(X,N);
 
     int index;
-    cout << endl << maxElement(Y,N,&index);
-    cout<< endl << index << endl;
+    cout << endl <<"Najwiekszy element tablicy Y: " << maxElement(Y,N,&index);
+    cout<< endl << "Indeks tego elementu: "<< index << endl;
 
     cout << "Odchylenie standardowe tablicy X: " << odchylenieStd(X,N) << endl;
 
@@ -63,9 +63,8 @@ int sumaKwadratowNP(int Tab[], int rozmiar) {
 
 //Funckja zwraca wartość największego elementu tablicy
 //jezeli został do niej przekazany parametr 'indx' to ustawia jego wartośc na numer indeksu tego największego elementu
-
 int maxElement(int Tab[],int rozmiar, int* indx) {
-    int maxElement;
+    int maxElement = Tab[0];
     for(int i=0; i< rozmiar;i++) {
         if(Tab[i]>=maxElement) {
             maxElement = Tab[i];
