@@ -68,9 +68,12 @@ double wartoscCiagu(double a0, int n) {
     //a0=a0
     //a1=a0/2+1/a0
     //a2=a1/2+1/a1 
-    double wartosc=0;
     double *tab = (double*) calloc(n,sizeof(double));
     for(int i = 0; i<n; i++) {
+        if(i==0) {
+            tab[0]=a0;
+            continue;
+        }
         tab[i]=(double)tab[i-1]/2+ (double)1/tab[i-1];
     }
     return tab[n-1];
