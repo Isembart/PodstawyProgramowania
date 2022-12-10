@@ -9,7 +9,6 @@ using namespace std;
 
 const int iloscKsiazek=10;
 
-void wczytajKsiazki();
 
 struct Pisarz{
     int rok_urodzenia;
@@ -31,10 +30,18 @@ struct Ksiazka{
     Pisarz* autor;
 };
 
+//Nie chciałem posiadac tablicy z duplikatami pisarzy więc wykorzystałem tablice gdzie każdy autor wystepuje tylko raz
 struct ListaPisarzy
 {
     Pisarz* head;
 };
+
+void wczytajKsiazki();
+void zapiszKsiazkiDanegoAutora(Ksiazka* , Pisarz* );
+void posortujKsiazkiWgAutora(Ksiazka*);
+void wypiszKsiazkiDanegoRodzaju(Ksiazka* , string );
+void getPisarz(Pisarz);
+void getKsiazka(Ksiazka);
 
 Ksiazka ksiazki[iloscKsiazek];
 ListaPisarzy pisarze;
@@ -56,7 +63,8 @@ Ksiazka newKsiazka(char* nazwa, int rok, Pisarz* pis) {
 }
 
 void getKsiazka(Ksiazka _ksiazka) {
-    cout << "Tytul: "<<_ksiazka.tytul<<" - Rok wydania: "<<_ksiazka.rok_wydania<<", autor: "<<" "<<_ksiazka.autor->nazwisko<<" urodzony w " <<_ksiazka.autor->rok_urodzenia<<" roku"<<endl;
+    cout << "Tytul: "<<_ksiazka.tytul<<" - Rok wydania: "<<_ksiazka.rok_wydania<<", gatunek: "<<_ksiazka.rodzaj<<", autor: ";
+    getPisarz(*_ksiazka.autor);
 }
 
 
@@ -77,6 +85,8 @@ int main() {
         cout << "Podaj numer polecenia ktore chceszwykonac:\n1. Wypisz liste ksiazek\n2. Zapisz plik z ksiazkami danego autora\n3. Posortuj ksiazki alfabetycznie wedlug autora i zapisz do pliku\n4. Wysiwetl ksiazki danego rodzaju\n5. Wyjdz z programu"<<endl;
         string wybor;
         string nazwaAutora;
+        Pisarz* temp = pisarze.head;
+        bool done = false;
         //Po zadeklarowaniu tej zmiennej wartości wskaznika autor w tablicy ksiazki zamieniaja sie w losowe wartosci 🤔🤔🤔🤔
         cin >> wybor;
         switch (atoi(wybor.c_str())) //z jakiegoś powodu cin>> [char*]  ->  atoi([char*]) = segmentation error więc 'wybor' jest typu string
@@ -91,6 +101,31 @@ int main() {
             cout << "Podaj nazwisko autora"<<endl;
             cin >> nazwaAutora;
             
+            while (temp!=NULL)
+            {
+                if(temp->nazwisko==nazwaAutora) {
+                    zapiszKsiazkiDanegoAutora(ksiazki,temp);
+                    done = true;
+                    //break;
+                } 
+                temp=temp->next;
+            }
+            if (!done)
+            {
+                cout << "Nie ma takiego autora!" <<endl;
+            }
+            break;
+
+        case 3: 
+            posortujKsiazkiWgAutora(ksiazki);
+            break;
+        
+        case 4:
+            cout<<"Podaj gatunek: "<<endl;
+            //Zamiast deklarowac drugą zmienną użyje po prostu nazwyAutora z podpunktu 2, dwie zmienne i tak nie wplywaly by na siebie
+            cin >> nazwaAutora;
+            wypiszKsiazkiDanegoRodzaju(ksiazki,nazwaAutora);
+            break;
         case 5:
             return 0 ;
 
@@ -173,5 +208,64 @@ void wczytajKsiazki() {
         
     }
     fs1.close();
+    
+}
+
+void zapiszKsiazkiDanegoAutora(Ksiazka _ksiazki[], Pisarz* autor) {
+    ofstream ostrm;
+    ostrm.open((string)autor->nazwisko+".txt");
+    for (int i = 0; i < iloscKsiazek; i++)
+    {
+        if(ksiazki[i].autor==autor) {
+            ostrm << ksiazki[i].tytul<<endl<<ksiazki[i].rok_wydania<<endl<<ksiazki[i].rodzaj<<endl<<autor->nazwisko<<endl<<autor->rok_urodzenia;
+        }
+    }
+
+    ostrm.close();
+    
+}
+
+void wypiszKsiazkiDanegoRodzaju(Ksiazka _ksiazki[], string rodzaj) {
+    bool done = false;
+    for (int i = 0; i < iloscKsiazek; i++)
+    {
+        if(ksiazki[i].rodzaj==rodzaj) {
+            getKsiazka(ksiazki[i]);
+            done = true;
+        }
+    }
+
+    if(!done) {
+        cout << "Nie ma takiego gatunku!"<<endl;
+    }
+    
+}
+
+void posortujKsiazkiWgAutora(Ksiazka _ksiazki[]) {
+    bool Sorted = false;
+    do
+    {
+        Sorted = false;
+        for(int i = 0; i < iloscKsiazek-1; i++) {
+            
+            if((int)_ksiazki[i].autor->nazwisko[0] > (int)_ksiazki[i+1].autor->nazwisko[0]) {
+                //zamien i oraz i+1 miejscami 
+                Ksiazka temp = _ksiazki[i];
+                ksiazki[i] = ksiazki[i+1];
+                ksiazki[i+1] = temp;
+                //Pętlna ustawi Zmienna sorted na true jeżeli wykonała chociaż jedną zamiane, jeśli zwróci false znaczy to że tablica jest posortowana
+                Sorted = true;
+            }
+        }
+    } while (Sorted==true);
+    
+    ofstream ostrm;
+    ostrm.open("ksiazki_posortowane_wg_autora.txt");
+    for (int i = 0; i < iloscKsiazek; i++)
+    {
+        ostrm << ksiazki[i].tytul<<endl<<ksiazki[i].rok_wydania<<endl<<ksiazki[i].rodzaj<<endl<<ksiazki[i].autor->nazwisko<<endl<<ksiazki[i].autor->rok_urodzenia<<endl;
+    }
+    
+    ostrm.close();
     
 }
