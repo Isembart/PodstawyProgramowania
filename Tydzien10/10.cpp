@@ -217,7 +217,7 @@ void zapiszKsiazkiDanegoAutora(Ksiazka _ksiazki[], Pisarz* autor) {
     for (int i = 0; i < iloscKsiazek; i++)
     {
         if(ksiazki[i].autor==autor) {
-            ostrm << ksiazki[i].tytul<<endl<<ksiazki[i].rok_wydania<<endl<<ksiazki[i].rodzaj<<endl<<autor->nazwisko<<endl<<autor->rok_urodzenia;
+            ostrm << ksiazki[i].tytul<<endl<<ksiazki[i].rok_wydania<<endl<<ksiazki[i].rodzaj<<endl<<autor->nazwisko<<endl<<autor->rok_urodzenia<<endl;
         }
     }
 
