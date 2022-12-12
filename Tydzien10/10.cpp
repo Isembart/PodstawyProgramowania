@@ -6,9 +6,7 @@
 
 using namespace std;
 
-
 const int iloscKsiazek=10;
-
 
 struct Pisarz{
     int rok_urodzenia;
@@ -58,7 +56,6 @@ Ksiazka newKsiazka(char* nazwa, int rok, Pisarz* pis) {
     strcpy(_ksiazka.tytul,nazwa);
     _ksiazka.rok_wydania = rok;
     _ksiazka.autor = pis;
-    
     return _ksiazka;
 }
 
@@ -67,14 +64,11 @@ void getKsiazka(Ksiazka _ksiazka) {
     getPisarz(*_ksiazka.autor);
 }
 
-
 void getPisarz(Pisarz _pisarz) {
     cout << _pisarz.nazwisko<<" "<<", urodzony w "<< _pisarz.rok_urodzenia<<endl;
 }
 
-
 int main() {
-    
     // Pisarz* temp = pisarze.head;
     // while(temp!=NULL) {
     //     cout<<temp->nazwisko<<" "<< temp->rok_urodzenia<<endl;
@@ -144,10 +138,11 @@ void wczytajKsiazki() {
 
     //wczytaj tablice ksiazek z pliku
     ifstream fs1;
-    fs1.open("ksiazki.txt");
+    fs1.open("ksiazki.csv");
 
     //zabiezpieczenie w przypadku nieistniejącego pliku ksiazki.csv
     if(!fs1.good()) {
+        cerr<<"Problem z plikiem ksiazki";
         exit(1);
     }
 
@@ -155,18 +150,18 @@ void wczytajKsiazki() {
     {
         string linia;
         //Tytul
-        getline(fs1,linia);
+        getline(fs1,linia,',');
         strcpy(ksiazki[i].tytul,linia.c_str());
         //Rok wydania
-        getline(fs1,linia);
+        getline(fs1,linia,',');
         ksiazki[i].rok_wydania = atoi(linia.c_str());
         //Rodzaj
-        getline(fs1,linia);
+        getline(fs1,linia,',');
         strcpy(ksiazki[i].rodzaj,linia.c_str());
        
         //AUTOR
         //linia = nazwisko autora
-        getline(fs1,linia);
+        getline(fs1,linia,',');
 
         Pisarz* temp = pisarze.head;
         bool znalezionoAutora = false;
@@ -177,7 +172,7 @@ void wczytajKsiazki() {
                 znalezionoAutora = true;
                 ksiazki[i].autor=temp;
                 //getline aby nastepna ksiazka zostala zczytana od tytulu a nie od niewykorzystanego roku urodzenia autora
-                getline(fs1,linia);
+                getline(fs1,linia,'\n');
                 break;
             }
             temp = temp->next;   
@@ -194,7 +189,8 @@ void wczytajKsiazki() {
         Pisarz* nowyPisarz = new Pisarz;
         strcpy(nowyPisarz->nazwisko, linia.c_str());
         //linia = rok urodzenia autora;
-        getline(fs1,linia);
+        //Rok urodzenia autora nie kończy się przecinkiem tylko znakiem nowej linii
+        getline(fs1,linia,'\n');
         nowyPisarz->rok_urodzenia = atoi(linia.c_str());
 
         temp=pisarze.head;
@@ -211,24 +207,20 @@ void wczytajKsiazki() {
             pisarze.head=nowyPisarz;
         }
         ksiazki[i].autor=nowyPisarz;
-        
     }
     fs1.close();
-    
 }
 
 void zapiszKsiazkiDanegoAutora(Ksiazka _ksiazki[], Pisarz* autor) {
     ofstream ostrm;
-    ostrm.open((string)autor->nazwisko+".txt");
+    ostrm.open((string)autor->nazwisko+".csv");
     for (int i = 0; i < iloscKsiazek; i++)
     {
         if(ksiazki[i].autor==autor) {
-            ostrm << ksiazki[i].tytul<<endl<<ksiazki[i].rok_wydania<<endl<<ksiazki[i].rodzaj<<endl<<autor->nazwisko<<endl<<autor->rok_urodzenia<<endl;
+            ostrm << ksiazki[i].tytul<<','<<ksiazki[i].rok_wydania<<','<<ksiazki[i].rodzaj<<','<<autor->nazwisko<<','<<autor->rok_urodzenia<<endl;
         }
     }
-
     ostrm.close();
-    
 }
 
 void wypiszKsiazkiDanegoRodzaju(Ksiazka _ksiazki[], string rodzaj) {
@@ -244,7 +236,6 @@ void wypiszKsiazkiDanegoRodzaju(Ksiazka _ksiazki[], string rodzaj) {
     if(!done) {
         cout << "Nie ma takiego gatunku!"<<endl;
     }
-    
 }
 
 void posortujKsiazkiWgAutora(Ksiazka _ksiazki[]) {
@@ -266,10 +257,10 @@ void posortujKsiazkiWgAutora(Ksiazka _ksiazki[]) {
     } while (Sorted==true);
     
     ofstream ostrm;
-    ostrm.open("ksiazki_posortowane_wg_autora.txt");
+    ostrm.open("ksiazki_posortowane_wg_autora.csv");
     for (int i = 0; i < iloscKsiazek; i++)
     {
-        ostrm << ksiazki[i].tytul<<endl<<ksiazki[i].rok_wydania<<endl<<ksiazki[i].rodzaj<<endl<<ksiazki[i].autor->nazwisko<<endl<<ksiazki[i].autor->rok_urodzenia<<endl;
+        ostrm << ksiazki[i].tytul<<','<<ksiazki[i].rok_wydania<<','<<ksiazki[i].rodzaj<<','<<ksiazki[i].autor->nazwisko<<','<<ksiazki[i].autor->rok_urodzenia<<endl;
     }
     
     ostrm.close();
