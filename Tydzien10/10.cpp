@@ -145,6 +145,12 @@ void wczytajKsiazki() {
     //wczytaj tablice ksiazek z pliku
     ifstream fs1;
     fs1.open("ksiazki.txt");
+
+    //zabiezpieczenie w przypadku nieistniejącego pliku ksiazki.csv
+    if(!fs1.good()) {
+        exit(1);
+    }
+
     for (int i = 0; i < iloscKsiazek; i++)
     {
         string linia;
