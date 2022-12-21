@@ -22,7 +22,7 @@ int main () {
 
   //Podpunkt 3
   //plik.open("plik");
-  zakoduj_plik("plik",(char*)"kodsieamisdnuasdhjaj");
+  zakoduj_plik("plik",(char*)"ka");
   //plik.close();
   
   return 0;
