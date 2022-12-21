@@ -1,14 +1,36 @@
+//Maurycy Farski
 #include <iostream>
-#include <fstream> //podpunkt 3 
+#include <bitset>
 
 using namespace std;
 
 int zakoduj_znaki(char[4]);
 void dekoduj_znaki(int,char[4]);
-void zakoduj_plik(string,string);
+void wlacz_bit(unsigned int& , int );
+void wylacz_bit(unsigned int& , int );
+void zmien_bit(unsigned int& , int );
+bool bit_wylaczony(unsigned int& , int );
 
 int main () {
-
+  //1:
+  unsigned int pkt1 = 0;
+  cout << "pkt1 = " << bitset<32>(pkt1) <<endl;
+  //wlacz
+  cout << "wlacz_bit(pkt1,3)" << endl;
+  wlacz_bit(pkt1,3);
+  cout << "pkt1 = " << bitset<32>(pkt1) <<endl;
+  //wylacz
+  cout << "wylacz_bit(pkt1,3)" << endl;
+  wylacz_bit(pkt1,3);
+  cout << "pkt1 = " << bitset<32>(pkt1) <<endl;
+  //zmien
+  cout << "zmien_bit(pkt1,31)" << endl;
+  wlacz_bit(pkt1,31);
+  cout << "pkt1 = " << bitset<32>(pkt1) <<endl;
+  //sprawdz
+  cout << "bit_wylaczony(pkt1,31) = " << bit_wylaczony(pkt1,31) <<endl;
+  
+  //2:
   int kod = zakoduj_znaki((char*)"heja");
   char dekodowanyKod[4];
   dekoduj_znaki(kod,dekodowanyKod);
@@ -20,11 +42,7 @@ int main () {
   }
   cout<< endl;
 
-  //Podpunkt 3
-  //plik.open("plik");
-  zakoduj_plik("plik",(char*)"ka");
-  //plik.close();
-  
+ 
   return 0;
 }
 
@@ -43,11 +61,10 @@ void zmien_bit(unsigned int& x, int pozycja) {
   x ^= (1 << pozycja);
 }
 
-bool bit_wylaczony(unsigned int x, int pozycja) {
+bool bit_wylaczony(unsigned int& x, int pozycja) {
   // Sprawdzenie, czy bit o podanej pozycji jest zerem
   return !(x & (1 << pozycja));
 }
-
 
 int zakoduj_znaki(char znaki[4])
 {
@@ -71,40 +88,4 @@ void dekoduj_znaki(int kod,char tekst[4]) {
     kod = (kod >> 8);
     //cout << tekst[i];
   }
-}
-
-void zakoduj_plik(string path,string kod)
-{
-  fstream oPlik;
-  //Nie jestem pewien czy dobrze zastosowałem | ios::binary (bez niego kod dziala dokladnie tak samo)
-  oPlik.open(path, ios::in | ios::out | ios::binary );
-  if(!oPlik.good()) {
-    return;
-  }
-  //Zmienna trzymajaca aktualnie czytany znak z pliku
-  char ch;
-  //zmienna przechowywujaca indeks znaku czytanego z pliku (aby podmienic znak w odpowiednim miejscu)
-  int i = 0;
-  //String jest lepszy niż char* poniewaz nie trzeba przekazywac do funkcji dlugosci kodu ani jej sprawdzac
-  int DlugoscKodu = kod.length();
-
-  //Iteruje po kazdym ze znakow
-  while (oPlik >>noskipws>> ch) {
-    cout << ch << " ^ " << kod[i%DlugoscKodu] << " = " << (char)(ch ^ kod[i%DlugoscKodu])<<"   "; //Debug
-    ch = ch ^ kod[i%DlugoscKodu];
-
-    //Aby uniknąć zapisywania zakodowanego pliku jako ciagu znakow i pozniejszego podmieniania pliku zawartosc jest na biezaco podmieniana
-    // PLIK: 1 <Atkualna pozycja>2 3 4  ostatnim zczytanym znakiem było '1' dla kod="kod" ch=1^k=Z i=0
-    // oPlik.seekp(i);
-    // PLIK: <Atkualna pozycja>1 2 3 4
-    // oPlik.write(&ch,1);
-    // PLIK: Z <Atkualna pozycja>2 3 4
-    // Jak widać '1' zostało podmienione 
-    oPlik.seekp(i);
-    oPlik.write(&ch,1);
-
-    i++;
-    //i%=DlugoscKodu;
-  }
-
 }
