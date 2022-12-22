@@ -81,7 +81,7 @@ int main() {
         string nazwaAutora;
         Pisarz* temp = pisarze.head;
         bool done = false;
-        //Po zadeklarowaniu tej zmiennej wartości wskaznika autor w tablicy ksiazki zamieniaja sie w losowe wartosci 🤔🤔🤔🤔
+        //Po zadeklarowaniu tej zmiennej (done) wartości wskaznika autor w tablicy ksiazki zamieniaja sie w losowe wartosci 🤔🤔🤔🤔 //Naprawione po dynamicznym alokowaniu pisarza
         cin >> wybor;
         switch (atoi(wybor.c_str())) //z jakiegoś powodu cin>> [char*]  ->  atoi([char*]) = segmentation error więc 'wybor' jest typu string
         {
