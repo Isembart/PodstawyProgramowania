@@ -34,8 +34,10 @@ int main () {
   int kod = zakoduj_znaki((char*)"heja");
   char dekodowanyKod[4];
   dekoduj_znaki(kod,dekodowanyKod);
-  cout << kod << endl;
+  cout << "Zakodowane znaki: " << kod << endl;
   //cout << (int)'h' << " "<< (int)'e' << " "<< (int)'j' << " "<< (int)'a' <<endl;
+
+  cout << "Rozkodowane znaki: ";
   for (int i = 0; i < 4; i++)
   {
     cout<< dekodowanyKod[i];

@@ -9,13 +9,22 @@ int main (int argc, char *argv[]) {
     if(argc != 3) {
         cout << "Bledne argumenty!" << endl;
         cout << "Poprawne wywolanie: xor.exe <Sciezka Pliku> <kod>"<<endl;
+        //cout << "Uzywam zmiennych domyslnych: Sciezka=DomyslnyPlik kod=kod"<<endl;
         return 1;
     }
+
+    //domyslne wartosci w momencie gdy uzytkownik nie poda argumentow
+    /*
+    argc = 3;
+    argv[1] = (char*)"DomyslnyPlik";
+    argv[2] = (char*) "kod";
+    */
 
     //Podpunkt 3
     //plik.open("plik");
     xor_plik(argv[1],(char*)argv[2]);
     //plik.close(); 
+    return 0;
 }
 
 void xor_plik(string path,string kod)
@@ -24,7 +33,8 @@ void xor_plik(string path,string kod)
   //Nie jestem pewien czy dobrze zastosowałem | ios::binary (bez niego kod dziala dokladnie tak samo)
   oPlik.open(path, ios::in | ios::out | ios::binary );
   if(!oPlik.good()) {
-    cout << "Nie udalo sie otworzyc pliku!";
+    cerr << "Nie udalo sie otworzyc pliku!";
+    oPlik.close();
     return;
   }
   //Zmienna trzymajaca aktualnie czytany znak z pliku
@@ -34,9 +44,9 @@ void xor_plik(string path,string kod)
   //String jest lepszy niż char* poniewaz nie trzeba przekazywac do funkcji dlugosci kodu ani jej sprawdzac
   int DlugoscKodu = kod.length();
 
-  //Iteruje po kazdym ze znakow
+  //Iteruje po kazdym ze znakow  //noskipws sprawia że nowa linijka jest czytana tako dwa znaki char 00001101 i 00001010. Umożliwia to poprawne zakodowanie i rozkodowanie plików z wieloma linijkami tekstu
   while (oPlik >>noskipws>> ch) {
-    cout << ch << " ^ " << kod[i%DlugoscKodu] << " = " << (char)(ch ^ kod[i%DlugoscKodu])<<"   "; //Debug
+    //cout << ch << " ^ " << kod[i%DlugoscKodu] << " = " << (char)(ch ^ kod[i%DlugoscKodu])<<"   "; //Debug - Pokazuje znak pliku zestawiony z odpowiednim znakiem z kodu, przydatne do testowania
     ch = ch ^ kod[i%DlugoscKodu];
 
     //Aby uniknąć zapisywania zakodowanego pliku jako ciagu znakow i pozniejszego podmieniania pliku zawartosc jest na biezaco podmieniana
